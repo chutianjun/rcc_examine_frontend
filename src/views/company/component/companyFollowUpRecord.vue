@@ -191,7 +191,7 @@ import {
   getAllEmployee,
   getFollowSimple,
   getFollowupList, postEditFollow, postFollowBatchDonw
-} from "@/api/realRequest/v1/company/company";
+} from "@/api/realRequest/v1/company";
 
 const originFollowForm = {
   //mobile 计数器

@@ -316,7 +316,7 @@
 
 <script>
 import _ from 'lodash'
-import {companyAddContact, getCompanyDetail, getCompanyContact} from "@/api/realRequest/v1/company/company";
+import {companyAddContact, getCompanyDetail, getCompanyContact} from "@/api/realRequest/v1/company";
 // eslint-disable-next-line no-unused-vars
 //原始的form表单数据
 const originContactForm = {

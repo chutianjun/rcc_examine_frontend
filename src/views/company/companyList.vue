@@ -48,7 +48,7 @@
 
 <script>
 //引入接口文件
-import {companyList, delFollow, postDelCompany} from "@/api/realRequest/v1/company/company";
+import {companyList, delFollow, postDelCompany} from "@/api/realRequest/v1/company";
 
 export default {
   name: "companyList",
