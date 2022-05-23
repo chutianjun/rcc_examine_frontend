@@ -25,7 +25,7 @@ export const getData = (params) => {
  */
 export const companyList = (params) => {
     return axios.request({
-        url: 'api/company/list',
+        url: '/api/company/list',
         method: 'get',
         params
     })
@@ -36,7 +36,7 @@ export const companyList = (params) => {
  */
 export const getCompanyDetail = (params) => {
     return axios.request({
-        url: 'api/company/detail',
+        url: '/api/company/detail',
         method: 'get',
         params
     })
@@ -48,7 +48,7 @@ export const getCompanyDetail = (params) => {
  */
 export const getCompanyContact = (params) => {
     return axios.request({
-        url: 'api/company/contact_list',
+        url: '/api/company/contact_list',
         method: 'get',
         params
     })
@@ -59,7 +59,7 @@ export const getCompanyContact = (params) => {
  */
 export const getAllEmployee = (params) => {
     return axios.request({
-        url: 'api/company/get_employees',
+        url: '/api/company/get_employees',
         method: 'get',
         params
     })
@@ -70,7 +70,7 @@ export const getAllEmployee = (params) => {
  */
 export const companyAddContact = (data) =>{
     return axios.request({
-        url:'api/company/add_contact',
+        url:'/api/company/add_contact',
         method:'post',
         data
     })
@@ -82,7 +82,7 @@ export const companyAddContact = (data) =>{
  */
 export const companyAddFollow = (data) =>{
     return axios.request({
-        url:'api/company/add_follow',
+        url:'/api/company/add_follow',
         method:'post',
         data
     })
@@ -93,7 +93,7 @@ export const companyAddFollow = (data) =>{
  */
 export const getFollowupList = (params) => {
     return axios.request({
-        url: 'api/company/follow_task_list',
+        url: '/api/company/follow_task_list',
         method: 'get',
         params
     })
@@ -104,7 +104,7 @@ export const getFollowupList = (params) => {
  */
 export const delFollow = (data) =>{
     return axios.request({
-        url:'api/company/del_follow',
+        url:'/api/company/del_follow',
         method:'post',
         data
     })
@@ -116,7 +116,7 @@ export const delFollow = (data) =>{
  */
 export const getFollowSimple = (params) => {
     return axios.request({
-        url: 'api/company/get_follow',
+        url: '/api/company/get_follow',
         method: 'get',
         params
     })
@@ -128,7 +128,7 @@ export const getFollowSimple = (params) => {
  */
 export const postEditFollow = (data) =>{
     return axios.request({
-        url:'api/company/edit_follow',
+        url:'/api/company/edit_follow',
         method:'post',
         data
     })
@@ -140,7 +140,7 @@ export const postEditFollow = (data) =>{
 
 export const postFollowBatchDonw = (data) =>{
     return axios.request({
-        url:'api/company/task_batch_done',
+        url:'/api/company/task_batch_done',
         method:'post',
         data
     })
@@ -153,7 +153,7 @@ export const postFollowBatchDonw = (data) =>{
  */
 export const postDelCompany = (data) =>{
     return axios.request({
-        url:'api/company/del',
+        url:'/api/company/del',
         method:'post',
         data
     })
