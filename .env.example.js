@@ -1,4 +1,6 @@
 // eslint-disable-next-line no-unused-vars
+//env 文件里 是一些 本地和 线上环境 不同的 配置项,
+//所以单独抽离出来,并且忽略掉了,方便 根据不同环境来配置
 exports.proxyConfig = {
     //首页
     '/apihome': {
