@@ -6,7 +6,7 @@ import config from "@/config";
 //对环境判断,如果是生产环境,就拿pro
 // console.log(process.env.NODE_ENV)
 const baseURL = process.env.NODE_ENV === 'development' ? config.baseURL.dev : config.baseURL.pro
-
+console.log(process.env.NODE_ENV,baseURL)
 class HttpRequest {
     //构造方法
     constructor(baseURL) {
