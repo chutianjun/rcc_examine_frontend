@@ -43,7 +43,7 @@
                       <img :src="srcImg" width="40px" class="imglogo">
                     </a>
                     <span class="user_name_span">
-                    {{current_user.employee_name}}
+                    {{isFull(current_user)?current_user.employee_name:''}})
                   </span>
                   </div>
 
