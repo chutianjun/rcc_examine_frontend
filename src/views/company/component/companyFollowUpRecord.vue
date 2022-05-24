@@ -408,11 +408,6 @@ export default {
     },
     submitToLoading(isShow = true) {
       this.followSubmitLoading = isShow
-      if (isShow) {
-        setTimeout(() => {
-          this.followSubmitLoading = false
-        }, 2000)
-      }
     },
     //编辑,修改跟进成功之后统一 操作
     opearSuccessCommon(res)
@@ -430,33 +425,35 @@ export default {
     async followHandleSubmit(name) {
       //butotn loading
       this.submitToLoading()
-       this.$refs[name].validate( (valid) => {
-        if (valid) {
-          let subData = _.cloneDeep(this.followFormData);
+       this.$refs[name].validate( async (valid) => {
+         if (valid) {
+           let subData = _.cloneDeep(this.followFormData);
 
-          subData.company_id = this.requestParams.company_id
+           subData.company_id = this.requestParams.company_id
 
-          subData.followup_status = this.followFormData.followup_status.join('') || 1
+           subData.followup_status = this.followFormData.followup_status.join('') || 1
 
-          if(this.editStatus=='create')
-          {
-             companyAddFollow(subData).then(res => {
-              this.opearSuccessCommon(res)
-            })
-          }
-          else if(this.editStatus =='edit')
-          {
-            // console.log(subData)
-             postEditFollow(subData).then(res=>{
-              this.opearSuccessCommon(res)
-            })
-          }
+           if (this.editStatus == 'create') {
+             await companyAddFollow(subData).then(res => {
+               this.submitToLoading(false) //隐藏loading
+
+               this.opearSuccessCommon(res)
+             })
+           } else if (this.editStatus == 'edit') {
+             // console.log(subData)
+             await postEditFollow(subData).then(res => {
+               this.submitToLoading(false) //隐藏loading
+
+               this.opearSuccessCommon(res)
+             })
+           }
 
 
-        } else {
-          this.$Message.error('请检查是否填写正确!');
-        }
-      })
+         } else {
+           this.$Message.error('请检查是否填写正确!');
+           this.submitToLoading(false) //隐藏loading
+         }
+       })
     },
     //批量完成跟进
     completeFollowUp() {

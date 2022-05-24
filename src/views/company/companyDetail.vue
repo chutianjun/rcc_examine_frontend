@@ -296,7 +296,7 @@
           <Col span="24" style="text-align: right">
             <FormItem>
               <Button type="primary" :loading="submitLoading" @click="handleSubmit('ContactForm')">
-                <span v-if="!submitLoading">提交</span>
+                <span v-if="!submitLoading">保存联系人</span>
                 <span v-else>处理中...</span>
               </Button>
               <Button @click="handleReset('ContactForm')" style="margin-left: 8px">重置</Button>
@@ -418,14 +418,17 @@ export default {
       //butotn loading
       this.submitToLoading()
 
-      this.$refs[name].validate((valid) => {
+      this.$refs[name].validate(async (valid) => {
         if (valid) {
           this.formData.mobile = this.formData.mobile_items.filter(item => item.status == 1 && item.value !== '').map(item => {
             return item.value
           }).join(',')
           this.formData.company_id = this.requestParams.company_id
-          companyAddContact(this.formData).then(res => {
+          await companyAddContact(this.formData).then(res => {
             const {code, msg} = res
+
+            this.submitToLoading(false)//隐藏loading
+
             if (code !== 200) {
               this.$Message.error(msg)
               return false
@@ -433,12 +436,16 @@ export default {
             this.$Message.success(msg);
             this.getContact()
             this.modalOpear(false)
+
+
           }).catch(res => {
             console.log(res)
           })
 
         } else {
           this.$Message.error('请检查是否填写正确!');
+          this.submitToLoading(false)//隐藏loading
+
         }
       })
     },
@@ -482,11 +489,6 @@ export default {
     },
     submitToLoading(isShow = true) {
       this.submitLoading = isShow
-      if (isShow) {
-        setTimeout(() => {
-          this.submitLoading = false
-        }, 2000)
-      }
     },
     //添加联系人,需要重置表单
     addContactButton() {
