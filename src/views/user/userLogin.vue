@@ -12,10 +12,10 @@
 
           <Col span="24">
             <FormItem label="姓名" prop="name">
-              <Input v-model="LoginFormData.employee_name" placeholder="请输入姓名"></Input>
+              <Input v-model="LoginFormData.employee_name" placeholder="请输入姓名" @keyup.enter.native="LoginHandleSubmit('LoginForm')"></Input>
             </FormItem>
             <FormItem label="密码" prop="name">
-              <Input type="password" v-model="LoginFormData.password" placeholder="请输入密码"></Input>
+              <Input type="password" v-model="LoginFormData.password" placeholder="请输入密码" @keyup.enter.native="LoginHandleSubmit('LoginForm')"></Input>
             </FormItem>
           </Col>
 
@@ -65,20 +65,17 @@ export default {
   methods: {
     submitToLoading(isShow = true) {
       this.LoginSubmitLoading = isShow
-      if (isShow) {
-        setTimeout(() => {
-          this.LoginSubmitLoading = false
-        }, 2000)
-      }
     },
     LoginHandleSubmit(name) {
-      this.submitToLoading()
+      this.submitToLoading(true)
       this.$refs[name].validate((valid) => {
         if (valid) {
           userLogin(this.LoginFormData).then(res => {
-            const {code, data} = res
+            this.submitToLoading(false) //关闭loading
+
+            const {code, data,msg} = res
             if (code !== 200 || data.token == '') {
-              this.$Message.error('登录失败,请重试')
+              this.$Message.error(msg)
               return false;
             }
             //赋值token
@@ -90,6 +87,7 @@ export default {
           })
         } else {
           this.$Message.error('请检查是否填写正确!');
+          this.submitToLoading(false) //关闭loading
         }
       })
 

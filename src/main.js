@@ -21,6 +21,10 @@ import '@/api/mock';
 //引入公共函数
 import '@/plugins/common'
 
+
+//引入vuex
+import store from '@/store'
+
 //加入进度条显示
 router.beforeEach((to, from, next) => {
     Vue.prototype.$LoadingBar.start();
@@ -56,6 +60,7 @@ router.afterEach((to, from, next) => {
 Vue.config.productionTip = false
 
 new Vue({
+    store,//vuex
     router,
     render: h => h(App),
 }).$mount('#app')

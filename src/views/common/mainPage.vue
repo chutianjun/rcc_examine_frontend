@@ -109,9 +109,7 @@ export default {
       this.$refs.side1.toggleCollapse();
     },
     logout() {
-      window.localStorage.removeItem('examine_Authorization')
-      window.localStorage.removeItem('employee_info')
-      this.$router.push({name:"Login"})
+      this.$store.commit("logout") //退出登录,跳转登录页
     }
   }
 }
