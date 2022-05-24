@@ -27,7 +27,8 @@
 
         <Row :style="{display: 'flex','margin-top':'20px'}">
           <Col span="20">
-            <Page @on-page-size-change="pageSizeChange" @on-change="jumpPage" :page-size="pagination.perPage"
+            <Page @on-page-size-change="pageSizeChange"
+                  @on-change="jumpPage" :page-size="pagination.perPage"
                   :total="pagination.dataTotal" show-total show-elevator show-sizer></Page>
           </Col>
 
@@ -149,10 +150,14 @@ export default {
       this.pagination.page = page
       this.getTableData()
     },
-    //选择条数
+    //选择每页条数
     pageSizeChange(per_page) {
       this.pagination.per_page = per_page
-      this.getTableData()
+      //选择每页条数的时候 ,只有 是第一页的时候,去获取数据
+      if(this.page == 1)
+      {
+        this.getTableData()
+      }
     },
     jumpEnter(page) {
       console.log(page)
