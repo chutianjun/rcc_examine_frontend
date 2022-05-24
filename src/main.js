@@ -23,6 +23,8 @@ import '@/plugins/common'
 
 //加入进度条显示
 router.beforeEach((to, from, next) => {
+    Vue.prototype.$LoadingBar.start();
+
     const token = window.localStorage.getItem('examine_Authorization')
     // //已登录
     if (token) {
@@ -42,9 +44,6 @@ router.beforeEach((to, from, next) => {
         }
         next()
     }
-
-
-    Vue.prototype.$LoadingBar.start();
     next();
 });
 

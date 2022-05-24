@@ -135,7 +135,7 @@ export default {
         }
 
           this.tableData.data = data.company_data.map(item => {
-            if (!this.isBlank(item.follow_up_employee)) {
+            if (this.isFull(item.follow_up_employee)) {
               item.follow_up_employee_name = item.follow_up_employee.employee_name
             }
             return item

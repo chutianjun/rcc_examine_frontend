@@ -30,20 +30,23 @@
         <Header :style="{padding: 0,background:'#515a6e'}" class="layout-header-bar">
 
           <Row>
-            <Col span="2">
+            <Col span="22">
               <Icon @click="collapsedSider" :class="rotateIcon" :style="{margin: '0 20px',color:'#ffffff'}"
                     type="md-menu"
                     size="24"></Icon>
             </Col>
-            <Col span="21">
-              <div style="text-align: right" class="logodiv">
+            <Col span="2">
+              <div  class="logodiv">
                 <Dropdown trigger="hover">
-                  <a href="javascript:void(0)">
-                    <img :src="srcImg" width="40px" class="imglogo">
-                  </a>
-                  <span class="user_name_span">
-                    {{current_user}}
+                  <div>
+                    <a href="javascript:void(0)">
+                      <img :src="srcImg" width="40px" class="imglogo">
+                    </a>
+                    <span class="user_name_span">
+                    {{current_user.employee_name}}
                   </span>
+                  </div>
+
                   <template #list>
                     <DropdownMenu>
                       <DropdownItem @click.native="logout">退出</DropdownItem>
@@ -82,7 +85,7 @@ export default {
       activeName: this.$route.name,
       companyLogo: require('@/assets/rcclogo.png'),
       srcImg: require('@/assets/rnf.jpg'),
-      current_user:window.localStorage.getItem('examine_user_name')
+      current_user:JSON.parse(window.localStorage.getItem('employee_info'))
     }
   },
   mounted() {
@@ -107,7 +110,7 @@ export default {
     },
     logout() {
       window.localStorage.removeItem('examine_Authorization')
-      window.localStorage.removeItem('examine_user_name')
+      window.localStorage.removeItem('employee_info')
       this.$router.push({name:"Login"})
     }
   }
@@ -115,9 +118,10 @@ export default {
 </script>
 <style scoped lang="less">
 .logodiv{
+  text-align: center;
   .user_name_span{
     font-size: 17px;
-    color: #c8c8c9;
+    color: #ffffff;
   }
 }
 .layout-header-bar {
@@ -185,8 +189,7 @@ export default {
 
 .imglogo {
   border-radius: 50%;
-  position: relative;
-  top: 11px;
+  vertical-align: middle;
 }
 </style>
 

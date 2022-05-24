@@ -1,21 +1,28 @@
 import Vue from 'vue'
-//判断某个值是否为空
-function isBlank(data)
-{
-    if(
+
+/**
+ * 判断某个值 是否 为空
+ * @param data
+ * @returns {boolean}
+ */
+function isFull(data) {
+    if (
         data == null ||
-        data === 'null' ||
-        data === '' ||
         data === undefined ||
-        data ==='undefined' ||
-        data === 'unknown'
-    )
-    {
-        return true
-    }
-    else
-    {
+        data === 'null' ||
+        data === 'undefined' ||
+        data === 'unknown' ||
+        data === '{}'   ||
+        data === '[]'   ||
+        (typeof data == 'string' && data.trim() == '') ||   //空的字符串
+        (data.toString() == '[object Object]'  && JSON.stringify(data)=='{}') ||  //空对象
+        (Array.isArray(data) && data.length==0)  //空数组
+    ) {
         return false
     }
+    else {
+        return true
+    }
 }
-Vue.prototype.isBlank=isBlank
+
+Vue.prototype.isFull = isFull

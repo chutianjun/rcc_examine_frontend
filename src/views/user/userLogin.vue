@@ -84,7 +84,7 @@ export default {
             //赋值token
             const token = data.token
             window.localStorage.setItem("examine_Authorization", token);
-            window.localStorage.setItem("examine_user_name", data.employee_name);
+            window.localStorage.setItem("employee_info", JSON.stringify(data.employee_info));
             //路由跳转
             this.$router.push({name: 'Home'})
           })

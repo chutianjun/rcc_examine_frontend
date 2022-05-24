@@ -25,7 +25,7 @@
                 </Col>
                 <Col :span="2">
                   <span class="left_span">
-                      {{ isBlank(companyData.follow_up_employee)?'':companyData.follow_up_employee.employee_name }}
+                      {{ isFull(companyData.follow_up_employee)?companyData.follow_up_employee.employee_name:'' }}
                   </span>
                 </Col>
               </Row>
