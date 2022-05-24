@@ -74,7 +74,7 @@
           <!--          跟进人 s-->
           <Col span="12" >
             <FormItem label="跟进人" prop="follower_id">
-              <Select v-model="followFormData.follower_id" placeholder="请选择跟进人">
+              <Select v-model="followFormData.follower_id" placeholder="请选择跟进人" filterable >
 
                 <template v-if="companyContactData.length>0">
 
@@ -99,7 +99,7 @@
           <!--          联系人 s-->
           <Col span="12">
             <FormItem label="联系人" prop="contact_id">
-              <Select v-model="followFormData.contact_id" placeholder="请选择联系人">
+              <Select v-model="followFormData.contact_id" placeholder="请选择联系人" filterable >
                 <template v-for="(item) in companyContactData">
                   <Option v-if="companyContactData.length>0" :key="item.id" :value="item.id">
                     {{ item.name }}
