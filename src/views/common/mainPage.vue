@@ -43,7 +43,7 @@
                       <img :src="srcImg" width="40px" class="imglogo">
                     </a>
                     <span class="user_name_span">
-                    {{isFull(current_user)?current_user.employee_name:''}})
+                    {{isFull(current_user)?current_user.employee_name:'(^_^)'}}
                   </span>
                   </div>
 
@@ -85,7 +85,7 @@ export default {
       activeName: this.$route.name,
       companyLogo: require('@/assets/rcclogo.png'),
       srcImg: require('@/assets/rnf.jpg'),
-      current_user:JSON.parse(window.localStorage.getItem('employee_info'))
+      current_user:this.parseToJson(window.localStorage.getItem('employee_info'))
     }
   },
   mounted() {

@@ -25,4 +25,23 @@ function isFull(data) {
     }
 }
 
+/**
+ *
+ * @param data
+ */
+function parseToJson(data)
+{
+    let jsonResult='';
+    try {
+        let jsonResult=JSON.parse(data)
+        return jsonResult
+    }catch (e)
+    {
+        console.log(e)
+    }
+    return jsonResult
+}
+
 Vue.prototype.isFull = isFull
+Vue.prototype.parseToJson = parseToJson
+
