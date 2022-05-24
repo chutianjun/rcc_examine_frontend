@@ -343,11 +343,18 @@ const originContactForm = {
 export default {
   name: "companyDetail",
   mounted() {
+    let a=['a','b','c']
+    // a.remove(1)
+    // console.log(a)
+    // a.splice(1,1)
+    // console.log(a) //['a', 'c']
   },
   created() {
     this.formData = _.cloneDeep(originContactForm)
     this.getCompany()
     this.getContact()
+  },
+  watch:{ //监听属性
   },
   data() {
     //手机号校验规则
@@ -476,7 +483,8 @@ export default {
         this.$Message.error('抱歉,至少需要保留一个手机号')
         return false;
       }
-      this.formData.mobile_items[index].status = 0
+      this.formData.mobile_items.splice(index,1) // 删除 指定索引 元素, splice 方法 会 被 vue 监听 到,其他的 方法 可能 不会
+      // this.formData.mobile_items[index].status = 0
     },
     //刷新联系人
     flushContact() {
