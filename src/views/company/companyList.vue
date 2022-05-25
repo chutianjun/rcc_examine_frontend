@@ -143,6 +143,7 @@ export default {
                       placeholder: '跟进人',
                     },
                     props: {
+                      transfer:true, //是否将弹层放置于 body 内
                       clearable: true,
                     },
                     //iview 组件 的事件,要用on
