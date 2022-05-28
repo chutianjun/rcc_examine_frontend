@@ -36,7 +36,9 @@
 
         <Row :style="{display: 'flex','margin-top':'20px'}">
           <Col span="20">
-            <Page @on-page-size-change="pageSizeChange"
+            <Page
+                :current="searchParams.page"
+                 @on-page-size-change="pageSizeChange"
                   @on-change="jumpPage"
                   :page-size="searchParams.per_page"
                   :total="dataTotal"
@@ -416,7 +418,6 @@ export default {
         this.searchParams['followup_employee_id'] = value
       }
       this.searchParams.page = 1 // 搜索页码还原
-      this.dataTotal = 0  //数据总数还原
       this.getTableData()
     },
     async getAllEmployee() {
