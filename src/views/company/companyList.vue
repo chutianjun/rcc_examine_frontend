@@ -241,6 +241,10 @@ export default {
                       this_v.companySearch(event.target.value, params)
                     }
                   },
+                  blur(event)
+                  {
+                    this_v.companySearch(event.target.value, params)
+                  }
                   // click: (event) => {
                   // console.log(this)
                   // console.log(params.column)
@@ -419,6 +423,7 @@ export default {
       }
       this.searchParams.page = 1 // 搜索页码还原
       this.getTableData()
+      this.$Message.success('搜索成功')
     },
     async getAllEmployee() {
       //已存在,不查询
