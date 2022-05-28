@@ -229,7 +229,10 @@ export default {
                 on: {
                   "on-clear": () => {
                     this_v.companySearch('', params)
-                  }
+                  },
+                  //失去焦点
+                  // "on-blur": (event)=>{
+                  // },
                 },
                 //原生的事件,用nativeOn
                 nativeOn: {
@@ -241,7 +244,7 @@ export default {
                       this_v.companySearch(event.target.value, params)
                     }
                   },
-                  blur(event)
+                  change(event)
                   {
                     this_v.companySearch(event.target.value, params)
                   }
