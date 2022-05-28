@@ -240,7 +240,6 @@ export default {
     }
   },
   created() {
-    this.followFormData = _.clone(originFollowForm)
     this.getFollow()
   },
   mounted() {
@@ -382,7 +381,7 @@ export default {
     followHandleReset(name) {
       this.$refs[name].resetFields();
     },
-    //添加 跟进记录0 ,需要重置表单
+    //添加 跟进记录  ,需要重置表单
     addContactButton() {
       this.editStatus='create'
       //  初始化form表单
@@ -424,7 +423,8 @@ export default {
     },
     async followHandleSubmit(name) {
       //butotn loading
-      this.submitToLoading()
+      this.submitToLoading(true)
+
        this.$refs[name].validate( async (valid) => {
          if (valid) {
            let subData = _.cloneDeep(this.followFormData);

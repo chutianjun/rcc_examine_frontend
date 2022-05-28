@@ -20,7 +20,7 @@ import {
     Page,
     Form,
     Input,
-    Select, Option, LoadingBar, DatePicker, CheckboxGroup, Checkbox, Header, Dropdown, DropdownMenu, DropdownItem,
+    Select, Option, LoadingBar, DatePicker, CheckboxGroup, Checkbox, Header, Dropdown, DropdownMenu, DropdownItem,Spin
 } from "iview";
 //引入iview样式文件
 import 'iview/dist/styles/iview.css'
@@ -53,6 +53,7 @@ Vue.component('Header', Header)
 Vue.component('Dropdown', Dropdown)
 Vue.component('DropdownMenu', DropdownMenu)
 Vue.component('DropdownItem', DropdownItem)
+Vue.component('Spin', Spin)
 
 //全局注册消息组件
 Vue.prototype.$Message = Message
@@ -60,3 +61,5 @@ Vue.prototype.$Message = Message
 Vue.prototype.$LoadingBar = LoadingBar
 //模态框
 Vue.prototype.$Modal=Modal
+//Spin
+Vue.prototype.$Spin=Spin
