@@ -38,9 +38,11 @@
           <Col span="20">
             <Page @on-page-size-change="pageSizeChange"
                   @on-change="jumpPage"
-                  :page-size="pagination.perPage"
-                  :total="pagination.dataTotal"
-                  show-total show-elevator show-sizer></Page>
+                  :page-size="searchParams.per_page"
+                  :total="dataTotal"
+                  show-total
+                  show-elevator
+                  show-sizer></Page>
           </Col>
 
           <Col span="4">
@@ -161,23 +163,16 @@ const searchParams={
   page: 1,
   per_page: 10,
   company_name: '',//公司名称搜索
-  followup_employee_id: ''//员工id搜索
+  followup_employee_id: '',//员工id搜索
 }
-//分页相关
-const pagination= {
-  //当前页
-      page: 1,
-      //数据总数
-      dataTotal: 0,
-      //每页条数
-      per_page: 10
-}
+
 export default {
   name: "companyList",
   data() {
     //保留 当前的this,也就是当前vue 实例
     let this_v = this;
     return {
+      dataTotal:0,//数据局总数
       isLoading: false,//全屏的loading
       companySubmitLoading: false,
       companyRuleValidate: { //表单校验规则
@@ -334,14 +329,6 @@ export default {
         //表格数据
         data: []
       },
-      pagination: {
-        //当前页
-        page: 1,
-        //数据总数
-        dataTotal: 0,
-        //每页条数
-        per_page: 10
-      },
       searchParams: {} //搜索条件
     }
   },
@@ -351,7 +338,6 @@ export default {
       this.$refs.selection.selectAll(status);
     },
     async getTableData() {
-      // console.log(this.pagination)
       await companyList(this.searchParams).then(res => {
         const {code, data, msg} = res
 
@@ -366,22 +352,19 @@ export default {
           }
           return item
         })
-        this.pagination.dataTotal = data.total
-        // this.$Message.success('请求成功')
+        this.dataTotal = data.total
       })
     },
     //跳转分页
     jumpPage(page) {
-      this.pagination.page = page
       this.searchParams.page = page
       this.getTableData()
     },
     //选择每页条数
     pageSizeChange(per_page) {
-      this.pagination.per_page = per_page
       this.searchParams.per_page = per_page
       //选择每页条数的时候 ,只有 是第一页的时候,去获取数据
-      if (this.page == 1) {
+      if (this.searchParams.page == 1) {
         this.getTableData()
       }
     },
@@ -427,10 +410,13 @@ export default {
     companySearch(value, params) {
       let filed_name = params.column.key;
       this.searchParams[filed_name] = value
+
       //员工显示的是姓名,但是要搜索的是id
       if (filed_name == 'follow_up_employee_name') {
         this.searchParams['followup_employee_id'] = value
       }
+      this.searchParams.page = 1 // 搜索页码还原
+      this.dataTotal = 0  //数据总数还原
       this.getTableData()
     },
     async getAllEmployee() {
@@ -452,7 +438,7 @@ export default {
     addCompany() {
       this.opearCompanyStatus = 'create'
       //  初始化form表单
-      this.companyFormData = _.cloneDeep(originCompanyForm)
+      this.companyFormData = _.clone(originCompanyForm)
       //初始化 rules
       this.companyHandleReset('companyForm')
 
@@ -497,8 +483,7 @@ export default {
     },
     async flushCompany() {
       this.fullScreenLoading(true) //全屏loading
-      this.searchParams=_.cloneDeep(searchParams) //重置搜索条件
-      this.pagination=_.cloneDeep(pagination) //重置分页
+      this.searchParams=_.clone(searchParams) //重置搜索条件
       await this.getTableData() //获取 列表数据
       this.fullScreenLoading(false) //全屏loading
       this.$Message.success('刷新成功')
@@ -523,7 +508,7 @@ export default {
 
       this.$refs[name].validate(async (valid) => {
         if (valid) {
-          let subData = _.cloneDeep(this.companyFormData);
+          let subData = _.clone(this.companyFormData);
           //添加公司
           if (this.opearCompanyStatus == 'create') {
             await postAddCompany(subData).then(res => {
@@ -583,8 +568,7 @@ export default {
   },
 
   created() {
-    this.searchParams=_.cloneDeep(searchParams)//搜索默认值
-    this.pagination=_.cloneDeep(pagination) //分页默认值
+    this.searchParams=_.clone(searchParams)//搜索默认值
     this.getTableData()
   },
   mounted() {
@@ -593,8 +577,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-.pagination {
-}
 
 .selectButton {
   text-align: right;
