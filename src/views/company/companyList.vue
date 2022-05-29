@@ -239,13 +239,14 @@ export default {
                   // click(event){
                   // this_v.companyNameSearch(event,params)
                   // },
-                  keyup(event) {
-                    if (event.keyCode == 13) {
-                      this_v.companySearch(event.target.value, params)
-                    }
-                  },
-                  change(event)
+                  // keyup(event) {
+                    // if (event.keyCode == 13) {
+                    //   this_v.companySearch(event.target.value, params)
+                    // }
+                  // },
+                  change(event)  //只需要change,改变事件即可
                   {
+                    console.log('change')
                     this_v.companySearch(event.target.value, params)
                   }
                   // click: (event) => {
