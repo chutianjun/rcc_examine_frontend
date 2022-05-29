@@ -38,13 +38,13 @@
           <Col span="20">
             <Page
                 :current="searchParams.page"
-                 @on-page-size-change="pageSizeChange"
-                  @on-change="jumpPage"
-                  :page-size="searchParams.per_page"
-                  :total="dataTotal"
-                  show-total
-                  show-elevator
-                  show-sizer></Page>
+                @on-page-size-change="pageSizeChange"
+                @on-change="jumpPage"
+                :page-size="searchParams.per_page"
+                :total="dataTotal"
+                show-total
+                show-elevator
+                show-sizer></Page>
           </Col>
 
           <Col span="4">
@@ -161,7 +161,7 @@ const originCompanyForm = {
   company_id: '' //公司ID
 };
 //默认搜索项
-const searchParams={
+const searchParams = {
   page: 1,
   per_page: 10,
   company_name: '',//公司名称搜索
@@ -174,7 +174,7 @@ export default {
     //保留 当前的this,也就是当前vue 实例
     let this_v = this;
     return {
-      dataTotal:0,//数据局总数
+      dataTotal: 0,//数据局总数
       isLoading: false,//全屏的loading
       companySubmitLoading: false,
       companyRuleValidate: { //表单校验规则
@@ -240,9 +240,9 @@ export default {
                   // this_v.companyNameSearch(event,params)
                   // },
                   // keyup(event) {
-                    // if (event.keyCode == 13) {
-                    //   this_v.companySearch(event.target.value, params)
-                    // }
+                  // if (event.keyCode == 13) {
+                  //   this_v.companySearch(event.target.value, params)
+                  // }
                   // },
                   change(event)  //只需要change,改变事件即可
                   {
@@ -491,9 +491,13 @@ export default {
       }
       this.$Spin.hide()
     },
+    //清空搜索条件
+    clearSearchCriteria() {
+      this.searchParams = _.clone(searchParams)
+    },
     async flushCompany() {
       this.fullScreenLoading(true) //全屏loading
-      this.searchParams=_.clone(searchParams) //重置搜索条件
+      this.clearSearchCriteria() //搜索条件初始化
       await this.getTableData() //获取 列表数据
       this.fullScreenLoading(false) //全屏loading
       this.$Message.success('刷新成功')
@@ -578,7 +582,7 @@ export default {
   },
 
   created() {
-    this.searchParams=_.clone(searchParams)//搜索默认值
+    this.clearSearchCriteria() //搜索条件初始化
     this.getTableData()
   },
   mounted() {
