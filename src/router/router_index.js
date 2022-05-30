@@ -59,8 +59,11 @@ const routes = [
             },
 
         ]
+    },
+    {
+        path: '*', // 访问不存在的页面,重定向页面地址
+        redirect: 'main/welcome'
     }
-
 ];
 
 //处理 重复点击路由的报错问题

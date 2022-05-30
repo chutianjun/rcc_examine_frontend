@@ -80,11 +80,9 @@
         <Tabs :style="{border:'1px solid #e8eaec'}" class="tabbar" @on-click="tabClick" :animated="false">
           <TabPane label="联系人" name="contact" icon="ios-contact">
             <Row :style="{'margin-bottom':'10px'}">
-              <Col span="3">
+              <Col span="24">
                 <Button @click="addContactButton" :size="'large'" icon="md-add" type="primary" ghost>添加联系人</Button>
-              </Col>
-              <Col span="2">
-                <Button :size="'large'" icon="ios-sync" type="default" @click="flushContact">刷新</Button>
+                <Button class="but-left" :size="'large'" icon="ios-sync" type="default" @click="flushContact">刷新</Button>
               </Col>
             </Row>
 
@@ -631,5 +629,8 @@ export default {
     position: relative;
     bottom: 5px;
   }
+}
+.but-left{
+  margin-left: 20px;
 }
 </style>
