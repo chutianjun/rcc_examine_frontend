@@ -174,6 +174,7 @@ export default {
     //保留 当前的this,也就是当前vue 实例
     let this_v = this;
     return {
+      isFlush:false, //是否点击刷新
       dataTotal: 0,//数据局总数
       isLoading: false,//全屏的loading
       companySubmitLoading: false,
@@ -246,7 +247,7 @@ export default {
                   // },
                   change(event)  //只需要change,改变事件即可
                   {
-                    console.log('change')
+                    console.log('change-inp')
                     this_v.companySearch(event.target.value, params)
                   }
                   // click: (event) => {
@@ -289,6 +290,12 @@ export default {
                     //iview 组件 的事件,要用on
                     on: {
                       'on-change': (value) => {
+                        if(this_v.isFlush) //如果当前正在刷新
+                        {
+                          return
+                        }
+                        console.log('change-sel')
+
                         this_v.companySearch(value, params)
                       },
                       "on-clear": () => {
@@ -496,11 +503,13 @@ export default {
       this.searchParams = _.clone(searchParams)
     },
     async flushCompany() {
+      this.isFlush=true
       this.fullScreenLoading(true) //全屏loading
       this.clearSearchCriteria() //搜索条件初始化
       await this.getTableData() //获取 列表数据
       this.fullScreenLoading(false) //全屏loading
       this.$Message.success('刷新成功')
+      this.isFlush=false
     },
     //编辑,修改跟进成功之后统一 操作
     companyOpearSuccessCommon(res) {
