@@ -69,7 +69,7 @@
         ref="companyRef"
         :mask-closable="false"
         v-model="companyModalShow"
-        title="添加公司"
+        :title="opearCompanyStatus == 'create' ? '添加公司': '编辑公司' "
     >
 
       <Form ref="companyForm" :model="companyFormData" :rules="companyRuleValidate" :label-width="80"
@@ -568,15 +568,15 @@ export default {
           return false
         }
 
-        this.opearCompanyStatus = 'edit'
+        this.opearCompanyStatus = 'edit' //编辑公司
 
-        this.companyFormData = data.company_data
+        this.companyFormData = data.company_data //公司 数据填充
 
         this.companyFormData.company_id = this.companyFormData.id // 公司ID重新赋值
 
-        this.getAllEmployee()
-        //打开modal
-        this.companyModalOpear(true)
+        this.getAllEmployee() //获取 相关员工
+
+        this.companyModalOpear(true) //打开modal
       })
     }
   },
