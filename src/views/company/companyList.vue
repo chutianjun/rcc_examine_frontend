@@ -147,7 +147,6 @@ import {
   companyList,
   postDelCompany,
   getAllEmployee,
-  postEditFollow,
 } from "@/api/realRequest/v1/company";
 import _ from "lodash";
 import {getCompanyDetail, postAddCompany, postEditCompany} from "@/api/realRequest/v1/company/opear";

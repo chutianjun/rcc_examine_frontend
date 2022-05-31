@@ -495,6 +495,14 @@ export default {
     },
     submitToLoading(isShow = true) {
       this.submitLoading = isShow
+      if(isShow)
+      {
+        //5秒后,无论成功失败,都还原
+        setTimeout(()=>{
+          this.followSubmitLoading=false
+        },5000)
+      }
+
     },
     //添加联系人,需要重置表单
     addContactButton() {

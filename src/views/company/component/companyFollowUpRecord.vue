@@ -4,7 +4,7 @@
     <Row id="content-body">
 
       <Col span="24" :style="{'margin-bottom':'10px'}">
-        <span style="font-size: 16px">未完成 ({{undoneTableData.length}}条)</span>
+        <span style="font-size: 16px">未完成 ({{ undoneTableData.length }}条)</span>
         <Button class="but-left" @click="addContactButton" :size="'large'" icon="md-add" type="primary" ghost>添加跟进
         </Button>
         <Button class="but-left" @click="completeFollowUp" :size="'large'" icon="md-checkmark" type="primary" ghost>
@@ -29,7 +29,7 @@
 
 
       <Col span="24" :style="{'margin-bottom':'10px','margin-top':'10px'}">
-        <span style="font-size: 16px">已完成 ({{doneTableData.length}}条)</span>
+        <span style="font-size: 16px">已完成 ({{ doneTableData.length }}条)</span>
       </Col>
 
 
@@ -47,13 +47,14 @@
     <!--    弹出框-->
 
     <Modal
+        @on-cancel="closeModal"
         width="600"
         id="follow-modal"
         :footer-hide="true"
         ref="FollowRef"
         :mask-closable="false"
         v-model="followmodalShow"
-        title="添加跟进"
+        :title="this.editStatus == 'create' ? '添加跟进': '修改跟进' "
     >
 
       <Form ref="FollowForm" :model="followFormData" :rules="followRuleValidate" :label-width="100"
@@ -71,37 +72,35 @@
           <!--          姓名 e-->
 
 
-          <!--          跟进人 s-->
-          <Col span="12" >
+          <!--          跟进人s-->
+          <Col span="12">
             <FormItem label="跟进人" prop="follower_id">
-              <Select v-model="followFormData.follower_id" placeholder="请选择跟进人" filterable >
-
-                <template v-if="companyContactData.length>0">
-
-                  <template v-for="(item) in allEmployees">
-                    <Option :key="item.id" :value="item.id">
-                      {{ item.employee_name }}
-                    </Option>
-                  </template>
-
+              <Select v-model="followFormData.follower_id"
+                      @on-open-change="followOpenChange"
+                      placeholder="请选择跟进人"
+                      :filterable="true"
+                      ref="dataSetfollower">
+                <template v-for="item in employeeList">
+                  <Option :value="item.id" :key="item.id">
+                    {{ item.employee_name }}
+                  </Option>
                 </template>
-
-                <template v-else>
-                  <Option value="1">加载中...</Option>
-                </template>
-
               </Select>
             </FormItem>
           </Col>
-          <!--          跟进人 e-->
+          <!--          跟进人e-->
 
 
           <!--          联系人 s-->
           <Col span="12">
             <FormItem label="联系人" prop="contact_id">
-              <Select v-model="followFormData.contact_id" placeholder="请选择联系人" filterable >
-                <template v-for="(item) in companyContactData">
-                  <Option v-if="companyContactData.length>0" :key="item.id" :value="item.id">
+              <Select v-model="followFormData.contact_id"
+                      @on-open-change="contactOpenChange"
+                      placeholder="请选择联系人"
+                      :filterable="true"
+                      ref="dataSetContact">
+                <template v-for="item in companyContactData">
+                  <Option :value="item.id" :key="item.id">
                     {{ item.name }}
                   </Option>
                 </template>
@@ -150,7 +149,7 @@
 
           <Col span="24">
             <FormItem label="跟进状态" prop="followup_status">
-              <CheckboxGroup v-model="followFormData.followup_status" >
+              <CheckboxGroup v-model="followFormData.followup_status">
                 <template v-for="(item) in followUpStatus">
                   <Checkbox :key="item.id" :label="item.id" @change.native="changeCheckBox(item)">
                     {{ item.name }}
@@ -163,9 +162,9 @@
 
           <Col span="24" style="text-align: right">
             <FormItem>
-              <Button type="primary"  :loading="followSubmitLoading"  @click="followHandleSubmit('FollowForm')">
+              <Button type="primary" :loading="followSubmitLoading" @click="followHandleSubmit('FollowForm')">
                 <span v-if="!followSubmitLoading">
-                  {{editStatus=='create'?'新增跟进':'修改跟进'}}
+                  {{ editStatus == 'create' ? '新增跟进' : '修改跟进' }}
                 </span>
                 <span v-else>处理中...</span>
               </Button>
@@ -247,7 +246,7 @@ export default {
   data() {
     return {
       //默认是创建
-      editStatus:'create',
+      editStatus: 'create',
       //未完成跟进任务
       undoneTablecolumns: [
         {
@@ -302,7 +301,7 @@ export default {
         train: '培训',
         other: '其他',
       },
-      allEmployees: [],
+      employeeList: [], //员工列表
       requestParams: this.$route.query,
       followFormData: {},
       //modal框
@@ -326,7 +325,8 @@ export default {
         ],
       },
       followSubmitLoading: false,
-
+      currentContact:'', //当前联系人
+      currentFollow:''//当前跟进人
     }
   },
   methods: {
@@ -366,7 +366,7 @@ export default {
     },
     //获取所有员工
     async getEmployeeList() {
-      if (this.allEmployees.length > 0) {
+      if (this.employeeList.length > 0) {
         return
       }
       await getAllEmployee().then(res => {
@@ -375,7 +375,7 @@ export default {
           this.$Message.error(msg)
           return false
         }
-        this.allEmployees = data.employee_data
+        this.employeeList = data.employee_data
       })
     },
     followHandleReset(name) {
@@ -383,7 +383,7 @@ export default {
     },
     //添加 跟进记录  ,需要重置表单
     addContactButton() {
-      this.editStatus='create'
+      this.editStatus = 'create'
       //  初始化form表单
       this.followFormData = _.cloneDeep(originFollowForm)
       //初始化 rules
@@ -407,10 +407,16 @@ export default {
     },
     submitToLoading(isShow = true) {
       this.followSubmitLoading = isShow
+      if(isShow)
+      {
+        //5秒后,无论成功失败,都还原
+        setTimeout(()=>{
+          this.followSubmitLoading=false
+        },5000)
+      }
     },
     //编辑,修改跟进成功之后统一 操作
-    opearSuccessCommon(res)
-    {
+    opearSuccessCommon(res) {
       const {code, msg} = res
       if (code !== 200) {
         this.$Message.error(msg)
@@ -421,64 +427,62 @@ export default {
 
       this.modalOpear(false)
     },
-    async followHandleSubmit(name) {
+    followHandleSubmit(name) {
       //butotn loading
       this.submitToLoading(true)
 
-       this.$refs[name].validate( async (valid) => {
-         if (valid) {
-           let subData = _.cloneDeep(this.followFormData);
+      this.$refs[name].validate(async (valid) => {
+        if (valid) {
+          let subData = _.cloneDeep(this.followFormData);
 
-           subData.company_id = this.requestParams.company_id
+          subData.company_id = this.requestParams.company_id
 
-           subData.followup_status = this.followFormData.followup_status.join('') || 1
+          subData.followup_status = this.followFormData.followup_status.join('') || 1
 
-           if (this.editStatus == 'create') {
-             await companyAddFollow(subData).then(res => {
-               this.submitToLoading(false) //隐藏loading
+          if (this.editStatus == 'create') {
+            await companyAddFollow(subData).then(res => {
+              this.submitToLoading(false) //隐藏loading
 
-               this.opearSuccessCommon(res)
-             })
-           } else if (this.editStatus == 'edit') {
-             // console.log(subData)
-             await postEditFollow(subData).then(res => {
-               this.submitToLoading(false) //隐藏loading
+              this.opearSuccessCommon(res)
+            })
+          } else if (this.editStatus == 'edit') {
+            // console.log(subData)
+            await postEditFollow(subData).then(res => {
+              this.submitToLoading(false) //隐藏loading
 
-               this.opearSuccessCommon(res)
-             })
-           }
+              this.opearSuccessCommon(res)
+            })
+          }
 
 
-         } else {
-           this.$Message.error('请检查是否填写正确!');
-           this.submitToLoading(false) //隐藏loading
-         }
-       })
+        } else {
+          this.$Message.error('请检查是否填写正确!');
+          this.submitToLoading(false) //隐藏loading
+        }
+      })
     },
     //批量完成跟进
     completeFollowUp() {
-      let task_ids=this.$refs.nodoneTable.getSelection().map(item =>  item.id)
-      if(task_ids.length<=0)
-      {
+      let task_ids = this.$refs.nodoneTable.getSelection().map(item => item.id)
+      if (task_ids.length <= 0) {
         this.$Message.error('抱歉,你还没有选择任何跟进任务')
         return false
       }
 
-      let this_v=this
+      let this_v = this
       this.$Modal.confirm({
         title: '完成提醒',
         content: '确认要完成选中的跟进任务么?',
         loading: true,
         async onOk() {
 
-          task_ids=task_ids.join(',')
+          task_ids = task_ids.join(',')
 
           await postFollowBatchDonw({
             task_ids
-          }).then(res=>{
-            const {code,msg}=res
-            if(code !==200)
-            {
+          }).then(res => {
+            const {code, msg} = res
+            if (code !== 200) {
               this_v.$Message.error(msg)
               return false
             }
@@ -501,31 +505,31 @@ export default {
     async editFollow(follow_id) {
       await getFollowSimple({
         follow_id
-      }).then(res=>{
-        const {code,data,msg}=res
-        if(code !==200)
-        {
+      }).then(res => {
+        const {code, data, msg} = res
+        if (code !== 200) {
           this.$Message.error(msg)
           return false
         }
 
 
-        this.editStatus='edit'
+        this.editStatus = 'edit'
 
-        this.followFormData=data.follow_data
+        this.followFormData = data.follow_data
 
         //这个多选框是个数组,其实如果是单选,不应该搞多选框的,这里能修改的 都是 未完成的
-        this.followFormData.followup_status=[]
+        this.followFormData.followup_status = []
 
         //获取员工
         this.getEmployeeList()
+
         //打开modal
         this.modalOpear(true)
       })
     },
     //删除跟进
     delFollow(id) {
-      let this_v=this
+      let this_v = this
       this.$Modal.confirm({
         title: '删除提醒',
         content: '确认要删除该跟进记录么',
@@ -552,6 +556,34 @@ export default {
     changeCheckBox() {
       //此处是单选,重新赋值
       // this.followFormData.followup_status=[item.id]
+    },
+    //关闭模态框
+    closeModal() {
+
+    },
+    contactOpenChange(status) {
+      if(status)
+      {
+        this.currentContact=this.$refs.dataSetContact.query
+        this.$refs.dataSetContact.query=''
+      }
+      else
+      {
+        this.$refs.dataSetContact.query= this.currentContact
+      }
+    },
+    followOpenChange(status) {
+      if(status)
+      {
+        this.currentFollow=this.$refs.dataSetfollower.query
+
+        this.$refs.dataSetfollower.query=''
+      }
+      else
+      {
+        this.$refs.dataSetfollower.query= this.currentFollow
+
+      }
     }
   }
 }
@@ -569,7 +601,6 @@ export default {
   }
 
 }
-
 
 
 </style>
