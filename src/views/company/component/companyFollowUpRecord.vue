@@ -567,29 +567,15 @@ export default {
         this.currentContact=this.$refs.dataSetContact.query
         this.$refs.dataSetContact.query=''
       }
-      else
-      {
-        if(this.$refs.dataSetContact.query=='')
-        {
-          this.$refs.dataSetContact.query= this.currentContact
 
-        }
-      }
     },
     followOpenChange(status) {
       if(status)
       {
         this.currentFollow=this.$refs.dataSetfollower.query
-
         this.$refs.dataSetfollower.query=''
       }
-      else
-      {
-        if(this.$refs.dataSetfollower.query=='')
-        {
-          this.$refs.dataSetfollower.query= this.currentFollow
-        }
-      }
+
     }
   }
 }
