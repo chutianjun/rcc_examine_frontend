@@ -569,7 +569,11 @@ export default {
       }
       else
       {
-        this.$refs.dataSetContact.query= this.currentContact
+        if(this.$refs.dataSetContact.query=='')
+        {
+          this.$refs.dataSetContact.query= this.currentContact
+
+        }
       }
     },
     followOpenChange(status) {
@@ -581,8 +585,10 @@ export default {
       }
       else
       {
-        this.$refs.dataSetfollower.query= this.currentFollow
-
+        if(this.$refs.dataSetfollower.query=='')
+        {
+          this.$refs.dataSetfollower.query= this.currentFollow
+        }
       }
     }
   }
