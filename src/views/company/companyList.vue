@@ -277,7 +277,7 @@ export default {
               // })
               return h('Select', {
                     attrs: {
-                      style: "width:150px",
+                      style: "width:80%",
                       placeholder: '跟进人',
                     },
                     props: {
