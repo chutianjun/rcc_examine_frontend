@@ -76,9 +76,8 @@
           <Col span="12">
             <FormItem label="跟进人" prop="follower_id">
               <Select v-model="followFormData.follower_id"
-                      @on-open-change="followOpenChange"
                       placeholder="请选择跟进人"
-                      :filterable="true"
+                      :filterable="false"
                       ref="dataSetfollower">
                 <template v-for="item in employeeList">
                   <Option :value="item.id" :key="item.id">
@@ -95,9 +94,8 @@
           <Col span="12">
             <FormItem label="联系人" prop="contact_id">
               <Select v-model="followFormData.contact_id"
-                      @on-open-change="contactOpenChange"
                       placeholder="请选择联系人"
-                      :filterable="true"
+                      :filterable="false"
                       ref="dataSetContact">
                 <template v-for="item in companyContactData">
                   <Option :value="item.id" :key="item.id">
@@ -561,22 +559,6 @@ export default {
     closeModal() {
 
     },
-    contactOpenChange(status) {
-      if(status)
-      {
-        this.currentContact=this.$refs.dataSetContact.query
-        this.$refs.dataSetContact.query=''
-      }
-
-    },
-    followOpenChange(status) {
-      if(status)
-      {
-        this.currentFollow=this.$refs.dataSetfollower.query
-        this.$refs.dataSetfollower.query=''
-      }
-
-    }
   }
 }
 </script>
