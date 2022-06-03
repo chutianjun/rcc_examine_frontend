@@ -77,13 +77,9 @@
             <FormItem label="跟进人" prop="follower_id">
               <Select v-model="followFormData.follower_id"
                       placeholder="请选择跟进人"
-                      :filterable="false"
+                      :filterable="true"
                       ref="dataSetfollower">
-                <template v-for="item in employeeList">
-                  <Option :value="item.id" :key="item.id">
-                    {{ item.employee_name }}
-                  </Option>
-                </template>
+                  <Option  v-for="item in employeeList" :value="item.id" :key="item.id">{{ item.employee_name }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -95,13 +91,9 @@
             <FormItem label="联系人" prop="contact_id">
               <Select v-model="followFormData.contact_id"
                       placeholder="请选择联系人"
-                      :filterable="false"
+                      :filterable="true"
                       ref="dataSetContact">
-                <template v-for="item in companyContactData">
-                  <Option :value="item.id" :key="item.id">
-                    {{ item.name }}
-                  </Option>
-                </template>
+                  <Option v-for="item in companyContactData" :value="item.id" :key="item.id">{{ item.name }}</Option>
               </Select>
             </FormItem>
           </Col>
@@ -510,7 +502,6 @@ export default {
           return false
         }
 
-
         this.editStatus = 'edit'
 
         this.followFormData = data.follow_data
@@ -520,6 +511,7 @@ export default {
 
         //获取员工
         this.getEmployeeList()
+
 
         //打开modal
         this.modalOpear(true)
@@ -557,7 +549,9 @@ export default {
     },
     //关闭模态框
     closeModal() {
-
+        //清空搜索项
+        this.$refs.dataSetfollower.$data.query=''
+        this.$refs.dataSetContact.$data.query=''
     },
   }
 }

@@ -55,7 +55,7 @@ class HttpRequest {
                 //设置一个变量,控制只弹出一次
                 if(!MessageTip)
                 {
-                    Message.error('抱歉,您的登录信息已过期,请重新登录,2秒后即将自动跳转登录页!') //直接调用message 的方式
+                    Message.error('抱歉,您的登录信息已过期,请重新登录,3秒后即将自动跳转登录页!') //直接调用message 的方式
                     MessageTip=true
 
                     // 方式1 起不到延迟的效果
@@ -66,7 +66,7 @@ class HttpRequest {
                     //方式2. 延迟两秒跳转
                     setTimeout(() => {
                         store.commit("logout")
-                    }, 2000)
+                    }, 3000)
 
                     //token如果失效,这里将消息改造一下,或者让后端直接改也行,这种方式还是不行,
                     // 有时候, 我们会请求多次, 不可能让每个 接口 都弹出 token 失效的信息
