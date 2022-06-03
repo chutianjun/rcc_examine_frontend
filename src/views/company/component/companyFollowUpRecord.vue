@@ -440,8 +440,12 @@ export default {
             await postEditFollow(subData).then(res => {
               this.submitToLoading(false) //隐藏loading
 
+              this.clearTheSelectBox() //清空select 搜索框
+
               this.opearSuccessCommon(res)
             })
+
+
           }
 
 
@@ -547,11 +551,15 @@ export default {
       //此处是单选,重新赋值
       // this.followFormData.followup_status=[item.id]
     },
+    clearTheSelectBox()
+    {
+      //清空搜索项
+      this.$refs.dataSetfollower.$data.query=''
+      this.$refs.dataSetContact.$data.query=''
+    },
     //关闭模态框
     closeModal() {
-        //清空搜索项
-        this.$refs.dataSetfollower.$data.query=''
-        this.$refs.dataSetContact.$data.query=''
+      this.clearTheSelectBox()
     },
   }
 }
