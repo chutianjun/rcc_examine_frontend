@@ -560,6 +560,7 @@ export default {
     //关闭模态框
     closeModal() {
       this.clearTheSelectBox()
+      this.followHandleReset('FollowForm') //初始化校验
     },
   }
 }
