@@ -22,3 +22,7 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+```
+将.env.example.js复制一份为 env.js ,修改域名 和 ip
+```
