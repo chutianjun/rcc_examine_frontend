@@ -85,7 +85,7 @@
 
           <Col span="12">
             <FormItem label="公司电话" prop="company_phone">
-              <Input v-model="companyFormData.company_phone" placeholder="请输入公司名称"></Input>
+              <Input v-model="companyFormData.company_phone" placeholder="请输入公司电话"></Input>
             </FormItem>
 
           </Col>
